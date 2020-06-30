@@ -16,4 +16,10 @@ end
 
 Given(/^Отправляем отчет в ЦК$/) do
   find("//span[@class='appsMaterialWizButtonPaperbuttonLabel quantumWizButtonPaperbuttonLabel exportLabel'][contains(.,'Отправить')]").click
+  xpath_opened_message = "//div[@class='freebirdFormviewerViewResponseConfirmationMessage']"
+  if try_to_find(xpath_opened_message, 1, 3)
+    puts "Ваш ответ записан."
+  else
+    p "Ответ не был записан."
+  end
 end
