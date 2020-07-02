@@ -9,6 +9,10 @@ Given(/^Вводим текст "(.*?)" в поле "(.*?)"$/) do |text, field_i
   find("//input[contains(@aria-label,'#{field_id}')]").set(text)
 end
 
+Given(/^Вводим текст "(.*?)" в поле ФИО$/) do |text|
+  find("//input[contains(@aria-labelledby,'i23')]").set(text)
+end
+
 Given(/^Выбираем текст "(.*?)" в выпадающем списке$/) do |text|
   find("//span[@class='quantumWizMenuPaperselectContent exportContent'][contains(.,'Выбрать')]").click
   find("//span[@class='quantumWizMenuPaperselectContent exportContent'][contains(.,'#{text}')]").click
