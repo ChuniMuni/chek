@@ -35,28 +35,11 @@ def interrupt_unknown_exception(exception)
   raise exception.class
 end
 
-def try_to_find(xpath, delay, retry_number, parameters='')
-  e = ''
-  counter = retry_number
-  while counter != 0
-    e = ''
-      begin
-        step %(Ожидаем #{delay} секунд)
-        if parameters!=''
-          page.find(:xpath,"#{xpath}", parameters)
-        else
-          page.find(:xpath,"#{xpath}")
-        end
-        # puts "Элемент #{xpath} найден с #{retry_number + 1 - counter} попытки"
-        counter = 0
-        result = true
-      rescue => e
-        p "Элемент #{xpath} не найден с #{retry_number + 1 - counter} попытки"
-        counter -= 1
-        result = false
-      rescue => e
-        interrupt_unknown_exception(e)
-      end
+def wait_for_element(xpath, timeout: 10, **options)
+  begin
+    page.find(:xpath, xpath, wait: timeout, **options)
+    true
+  rescue Capybara::ElementNotFound
+    false
   end
-  return result
 end
