@@ -63,33 +63,6 @@ def try_to_find(xpath, delay, retry_number, parameters='')
   false
 end
 
-def try_to_find_improved(xpath, delay, retry_number, parameters = {})
-  retry_number.times do |attempt|
-    begin
-      sleep(delay) if delay > 0
-      
-      element = if parameters.empty?
-                  page.find(:xpath, xpath)
-                else
-                  page.find(:xpath, xpath, **parameters)
-                end
-      
-      puts "Элемент #{xpath} найден с #{attempt + 1} попытки" if ENV['DEBUG']
-      return true
-      
-    rescue Capybara::ElementNotFound
-      puts "Элемент #{xpath} не найден. Попытка #{attempt + 1} из #{retry_number}"
-      next # переходим к следующей итерации
-    rescue StandardError => e
-      puts "Критическая ошибка при поиске #{xpath}: #{e.class} - #{e.message}"
-      puts e.backtrace.first(5).join("\n") if ENV['DEBUG']
-      raise e # Reraise критических ошибок немедленно
-    end
-  end
-  
-  false
-end
-
 def wait_for_element(xpath, timeout: 10, **options)
   begin
     page.find(:xpath, xpath, wait: timeout, **options)
